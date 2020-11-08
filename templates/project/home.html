@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div>
+		<a class='btn btn-primary' href="{% url 'project-add-view' %}" style="float: right;margin-bottom: 4px;"> Add Project </a>
+	</div>
+	<h3>Project Listing</h3>
+    <table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">name</th>
+	      <th scope="col">description</th>
+	      <th scope="col">duration</th>
+	      <th scope="col">Action</th>
+	    </tr>
+	  </thead>
+	  <tbody id="project-listing-body">
+	   </tbody>
+	</table>
+{% endblock %}
+
+{% block js_script %}
+	$(function() {
+		$.get("{% url 'project-list' %}", function( data ) {
+		  $.each(data, function(index, data_value){
+		    var project_listing_body = $("#project-listing-body");
+		  	var listing_body_html = "<tr>";
+
+		  	listing_body_html += "<td scope='row'>"+ data_value.name +"</td>";
+		  	listing_body_html += "<td>"+ data_value.description +"</td>";
+		  	listing_body_html += "<td>"+ data_value.duration +"</td>";
+		  	listing_body_html += "<td>" +
+		  	"<a class='btn btn-primary' href=projecttask/detail/" + data_value.id + "> Detail </a> " + 
+		  	"<a class='btn btn-primary' href=" + data_value.detail_url + "> edit</a> <a class='btn btn-danger delete' data-href=" + "{% url 'project-list' %}" + data_value.id + "> delete</a>"  + 
+		  	"</td>"
+		    
+		    listing_body_html += "</tr>";
+		    project_listing_body.append(listing_body_html);
+		  });
+		});
+
+		$("table").on('click', '.delete', function(){
+			var url = $(this).attr('data-href');
+			var $tr = $(this).parents('tr');
+			if (confirm("Are you Sure wanted to Delete the rocord")) {
+				$.ajax({
+				  url: url,
+				  type: 'DELETE',
+				  success: function(data) {
+				   $tr.remove(); 
+				  }
+				});
+			}
+	    });
+	});
+{% endblock %}

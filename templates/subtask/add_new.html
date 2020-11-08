@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load rest_framework %}
+
+{% block content %}
+	<h1>{{ action_type }} Sub Task</h1>
+
+	<form action="{% url 'subtask-add-edit' project_id=project_id pk=pk subtask_id=subtask_id %}" method="POST">
+	    {% csrf_token %}
+	    {% render_form serializer %}
+	    <input type="submit" value="Save">
+	</form>
+{% endblock %}
