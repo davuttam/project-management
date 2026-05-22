@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h1>Task Details</h1>
+	<div class="card" style="padding: 8px;">
+		<p><span style="font-weight: 700;">Name</span>: {{ task.name }}</p>
+		<p><span style="font-weight: 700;">Description</span>: {{ task.description }}</p>
+		<p><span style="font-weight: 700;">Project</span>: {{ task.project.name }}</p>
+		<p><span style="font-weight: 700;">Start Date</span>: {{ task.start_date }}</p>
+		<p><span style="font-weight: 700;">End Date</span>: {{ task.end_date }}</p>
+		<p><span style="font-weight: 700;">Assignees</span>: {{ task.get_assignees }}</p>
+		<p><span style="font-weight: 700;">Created At</span>: {{ task.created_at }}</p>
+	</div>
+	<br><br>
+	{% include 'subtask/listing.html' %}
+
+{% endblock %}
+
+{% block js_script %}
+	$("table").on('click', '.delete', function(){
+		var url = $(this).attr('data-href');
+		var $tr = $(this).parents('tr');
+		if (confirm("Are you Sure wanted to Delete the rocord")) {
+			$.ajax({
+			  url: url,
+			  type: 'DELETE',
+			  success: function(data) {
+			   $tr.remove(); 
+			  }
+			});
+		}
+    });
+{% endblock %}

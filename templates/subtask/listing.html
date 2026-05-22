@@ -1,0 +1,26 @@
+<div>
+	<a class='btn btn-success' href="{% url 'subtask-add-edit' project_id='create' pk='create' subtask_id='create' %}" style="float: right;margin-bottom: 4px;"> New Subtask </a>
+</div>
+<h3>Sub Tasks Listing</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">name</th>
+      <th scope="col">description</th>
+      <th scope="col">start date</th>
+      <th scope="col">end date</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody id="task-listing-body">
+  	{% for subtask in subtasks %}
+	  	<tr>
+	  		<td> {{ subtask.name }} </td>
+	  		<td> {{ subtask.description }} </td>
+	  		<td> {{ subtask.start_date }} </td>
+	  		<td> {{ subtask.end_date }} </td>
+	  		<td> <a class="btn btn-primary" href="{% url 'subtask-add-edit' project_id=subtask.task.project.id pk=subtask.task.pk subtask_id=subtask.pk %}">Edit</a> <a data-href="{% url 'subtask-detail' pk=subtask.id %}" class="btn btn-danger delete">delete</a> </td>
+	  	</tr>
+	{% endfor %}  	
+   </tbody>
+</table>

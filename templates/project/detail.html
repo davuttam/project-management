@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h1>Project Details</h1>
+	<div class="card" style="padding: 8px;">
+		<p><span style="font-weight: 700;">Name</span>: {{ project.name }}</p>
+		<p><span style="font-weight: 700;">Description</span>: {{ project.description }}</p>
+		<p><span style="font-weight: 700;">Duration</span>: {{ project.duration }}</p>
+		<p><span style="font-weight: 700;">Created At</span>: {{ project.created_at }}</p>
+	</div>
+	<br><br>
+	{% include 'task/listing.html' %}
+
+{% endblock %}
+
+{% block js_script %}
+	$("table").on('click', '.delete', function(){
+		var url = $(this).attr('data-href');
+		var $tr = $(this).parents('tr');
+		if (confirm("Are you Sure wanted to Delete the rocord")) {
+			$.ajax({
+			  url: url,
+			  type: 'DELETE',
+			  success: function(data) {
+			   $tr.remove(); 
+			  }
+			});
+		}
+    });
+{% endblock %}
